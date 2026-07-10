@@ -153,14 +153,34 @@
                                     <input type="hidden" id="glucose" value="1">
                                 </div>
 
-                                <!-- Smoking (full width) -->
+                                <!-- Smoking -->
                                 <div class="field field-full">
-                                    <div class="field-label-row"><label>Smoking</label></div>
+                                    <div class="field-label-row"><label>🚬 Smoking</label></div>
                                     <div class="segmented" id="seg-smoke">
                                         <button type="button" class="seg-btn active" data-value="false">Non-smoker</button>
                                         <button type="button" class="seg-btn" data-value="true">Smoker</button>
                                     </div>
                                     <input type="hidden" id="smoke" value="false">
+                                </div>
+
+                                <!-- Alcohol -->
+                                <div class="field field-full">
+                                    <div class="field-label-row"><label>🍷 Alcohol Intake</label></div>
+                                    <div class="segmented" id="seg-alco">
+                                        <button type="button" class="seg-btn active" data-value="false">No alcohol</button>
+                                        <button type="button" class="seg-btn" data-value="true">Drinks alcohol</button>
+                                    </div>
+                                    <input type="hidden" id="alco" value="false">
+                                </div>
+
+                                <!-- Physical Activity -->
+                                <div class="field field-full">
+                                    <div class="field-label-row"><label>🏃 Physical Activity</label></div>
+                                    <div class="segmented" id="seg-active">
+                                        <button type="button" class="seg-btn" data-value="false">Inactive</button>
+                                        <button type="button" class="seg-btn active" data-value="true">Active</button>
+                                    </div>
+                                    <input type="hidden" id="active" value="true">
                                 </div>
 
                             </div><!-- /fields-grid -->

@@ -123,7 +123,9 @@ async function handleFormSubmit(event) {
     const cholesterol = cholRaw ? parseInt(cholRaw) : 1;
     const glucose     = glucRaw ? parseInt(glucRaw) : 1;
 
-    const smoke = document.getElementById("smoke").value === "true";
+    const smoke  = document.getElementById("smoke").value === "true";
+    const alco   = document.getElementById("alco").value === "true";
+    const active = document.getElementById("active").value === "true";
 
     // ── Try backend first, fall back to JS ──────────────────────────────
     const payload = {
