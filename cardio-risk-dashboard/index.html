@@ -14,245 +14,329 @@
 </head>
 <body>
 
-    <!-- ===== HEADER ===== -->
+    <!-- ===== SHARED HEADER ===== -->
     <header class="site-header">
         <div class="header-inner">
-            <a href="#" class="logo">
-                <svg class="logo-svg" width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <a href="#" class="logo" onclick="navigateToInputs(); return false;">
+                <svg class="logo-svg" width="26" height="26" viewBox="0 0 26 26" fill="none">
                     <path d="M13 22C13 22 3.5 15.5 3.5 9.5C3.5 7 5.5 5 8 5C9.9 5 11.4 6.1 12.3 7.6L13 8.8L13.7 7.6C14.6 6.1 16.1 5 18 5C20.5 5 22.5 7 22.5 9.5C22.5 15.5 13 22 13 22Z" stroke="var(--primary)" stroke-width="1.75" stroke-linejoin="round"/>
                     <path d="M4.5 11.5H8.5L10.5 8L13 14.5L15.5 9.5L17.5 12.5H21.5" stroke="var(--primary)" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>
                 </svg>
                 <span class="logo-name">Cormeum</span>
             </a>
-            <nav class="site-nav">
+            <!-- Page 1 nav -->
+            <nav class="site-nav" id="nav-p1">
                 <a href="#model">Model</a>
                 <a href="#result">Predict</a>
             </nav>
+            <!-- Page 2 nav -->
+            <div class="p2-nav hidden" id="nav-p2">
+                <button class="btn-back" onclick="navigateToInputs()">← Modify inputs</button>
+                <button class="btn-predict" onclick="window.print()" style="font-size:0.8rem; padding: 0 1rem; height: 2.25rem;">🖨 Print report</button>
+            </div>
         </div>
     </header>
-
-    <!-- ===== MAIN ===== -->
-    <main>
-        <div class="page-container">
-
-            <!-- Hero -->
-            <section class="hero">
-                <div class="hero-inner">
-                    <div class="badge-pill">
-                        <span class="badge-dot"></span>
-                        Cardiovascular risk model · v1.0
-                    </div>
-                    <h1 class="hero-title">A compact model for the <em>heart of the matter</em></h1>
-                    <p class="hero-sub">Cormeum estimates ten-year cardiovascular risk from nine simple inputs. No labs beyond what a routine check-up gives you.</p>
-                </div>
-            </section>
-
-            <!-- Two-column grid -->
-            <div class="main-grid">
-
-                <!-- LEFT: Patient Input Form -->
-                <div class="form-card">
-                    <div class="form-card-header">
-                        <h2>Patient inputs</h2>
-                        <p>Nine fields. No account. Nothing leaves your browser.</p>
-                    </div>
-
-                    <form id="metrics-form" onsubmit="handleFormSubmit(event)">
-                        <div class="fields-grid">
-
-                            <!-- Age -->
-                            <div class="field">
-                                <div class="field-label-row">
-                                    <label for="age">Age</label>
-                                    <span class="field-unit">yrs</span>
-                                </div>
-                                <input type="number" id="age" name="age" class="num-input" min="1" max="120" placeholder="45" required>
-                            </div>
-
-                            <!-- Gender -->
-                            <div class="field">
-                                <div class="field-label-row">
-                                    <label>Gender</label>
-                                </div>
-                                <div class="segmented" id="seg-gender">
-                                    <button type="button" class="seg-btn" data-value="female">Female</button>
-                                    <button type="button" class="seg-btn active" data-value="male">Male</button>
-                                </div>
-                                <input type="hidden" id="gender" value="male">
-                            </div>
-
-                            <!-- Height -->
-                            <div class="field">
-                                <div class="field-label-row">
-                                    <label for="height">Height</label>
-                                    <span class="field-unit">cm</span>
-                                </div>
-                                <input type="number" id="height" name="height" class="num-input" min="100" max="250" placeholder="172" required>
-                            </div>
-
-                            <!-- Weight -->
-                            <div class="field">
-                                <div class="field-label-row">
-                                    <label for="weight">Weight</label>
-                                    <span class="field-unit">kg</span>
-                                </div>
-                                <input type="number" id="weight" name="weight" class="num-input" min="30" max="250" placeholder="78" required>
-                            </div>
-
-                            <!-- Systolic BP -->
-                            <div class="field">
-                                <div class="field-label-row">
-                                    <label for="ap-hi">Systolic BP</label>
-                                    <span class="field-unit">mmHg</span>
-                                </div>
-                                <input type="number" id="ap-hi" name="ap-hi" class="num-input" min="70" max="250" placeholder="120">
-                            </div>
-
-                            <!-- Diastolic BP -->
-                            <div class="field">
-                                <div class="field-label-row">
-                                    <label for="ap-low">Diastolic BP</label>
-                                    <span class="field-unit">mmHg</span>
-                                </div>
-                                <input type="number" id="ap-low" name="ap-low" class="num-input" min="40" max="150" placeholder="80">
-                            </div>
-
-                            <!-- Cholesterol -->
-                            <div class="field">
-                                <div class="field-label-row">
-                                    <label>Cholesterol</label>
-                                </div>
-                                <div class="segmented segmented-3" id="seg-cholesterol">
-                                    <button type="button" class="seg-btn active" data-value="1">Normal</button>
-                                    <button type="button" class="seg-btn" data-value="2">Above</button>
-                                    <button type="button" class="seg-btn" data-value="3">Well above</button>
-                                </div>
-                                <input type="hidden" id="cholesterol" value="1">
-                            </div>
-
-                            <!-- Glucose -->
-                            <div class="field">
-                                <div class="field-label-row">
-                                    <label>Glucose</label>
-                                </div>
-                                <div class="segmented segmented-3" id="seg-glucose">
-                                    <button type="button" class="seg-btn active" data-value="1">Normal</button>
-                                    <button type="button" class="seg-btn" data-value="2">Above</button>
-                                    <button type="button" class="seg-btn" data-value="3">Well above</button>
-                                </div>
-                                <input type="hidden" id="glucose" value="1">
-                            </div>
-
-                            <!-- Smoking (full width) -->
-                            <div class="field field-full">
-                                <div class="field-label-row">
-                                    <label>Smoking</label>
-                                </div>
-                                <div class="segmented" id="seg-smoke">
-                                    <button type="button" class="seg-btn active" data-value="false">Non-smoker</button>
-                                    <button type="button" class="seg-btn" data-value="true">Smoker</button>
-                                </div>
-                                <input type="hidden" id="smoke" value="false">
-                            </div>
-
-                        </div><!-- /fields-grid -->
-
-                        <div class="form-actions">
-                            <button type="submit" class="btn-predict" id="btn-predict">
-                                Predict risk →
-                            </button>
-                            <button type="button" class="btn-reset" onclick="resetForm()">
-                                Reset
-                            </button>
-                        </div>
-                    </form>
-                </div><!-- /form-card -->
-
-                <!-- RIGHT: Result Panel -->
-                <div class="result-panel" id="result">
-
-                    <!-- Empty State -->
-                    <div id="empty-state">
-                        <div class="result-label-row">
-                            <span class="result-dot"></span>
-                            <span class="result-label-text">Awaiting inputs</span>
-                        </div>
-                        <h2 class="empty-heading">Your cardiovascular risk score will appear here.</h2>
-                        <p class="empty-sub">Fill in the patient inputs on the left and click "Predict risk" to generate a personalised ten-year cardiovascular disease probability estimate.</p>
-                        <ul class="feature-list">
-                            <li><span class="feat-bar"></span>Age &amp; sex</li>
-                            <li><span class="feat-bar"></span>BMI</li>
-                            <li><span class="feat-bar"></span>Blood pressure</li>
-                            <li><span class="feat-bar"></span>Cholesterol &amp; glucose</li>
-                            <li><span class="feat-bar"></span>Smoking status</li>
-                        </ul>
-                    </div>
-
-                    <!-- Result View (shown after prediction) -->
-                    <div id="result-view" class="hidden">
-                        <div class="result-score-header">
-                            <span class="result-label-text-sm">Cormeum score</span>
-                            <span class="risk-badge" id="risk-badge">Low risk</span>
-                        </div>
-                        <div class="score-row">
-                            <span class="score-number" id="score-number">0</span>
-                            <span class="score-denom">/ 100</span>
-                        </div>
-                        <div class="score-bar-track">
-                            <div class="score-bar-fill" id="score-bar-fill"></div>
-                        </div>
-                        <p class="bmi-note" id="bmi-note"></p>
-
-                        <div class="factors-section">
-                            <h4 class="factors-heading">Contributing factors</h4>
-                            <ul class="factors-list" id="factors-list"></ul>
-                        </div>
-
-                        <p class="disclaimer">Educational estimate only. Not a substitute for clinical judgment or diagnosis.</p>
-                    </div>
-
-                </div><!-- /result-panel -->
-
-            </div><!-- /main-grid -->
-
-            <!-- How It Works -->
-            <section id="model" class="how-it-works">
-                <h2 class="how-title">How Cormeum reads a patient.</h2>
-                <div class="how-grid">
-                    <div class="how-card">
-                        <span class="how-num">01</span>
-                        <h3 class="how-card-title">Nine inputs</h3>
-                        <p>Age, gender, height, weight, systolic &amp; diastolic blood pressure, cholesterol, glucose, and smoking status — all obtainable from a routine check-up.</p>
-                    </div>
-                    <div class="how-card">
-                        <span class="how-num">02</span>
-                        <h3 class="how-card-title">Logistic core</h3>
-                        <p>A weighted logistic model inspired by the Cardiovascular Disease dataset combines all inputs into a single readable probability score.</p>
-                    </div>
-                    <div class="how-card">
-                        <span class="how-num">03</span>
-                        <h3 class="how-card-title">Interpretable</h3>
-                        <p>See which factors pushed your score up — and by how much — so you know exactly where to focus your attention first.</p>
-                    </div>
-                </div>
-            </section>
-
-        </div><!-- /page-container -->
-    </main>
-
-    <!-- Footer -->
-    <footer class="site-footer">
-        <div class="footer-inner">
-            <span id="footer-year"></span>
-            <span>Built with care for hearts everywhere.</span>
-        </div>
-    </footer>
 
     <!-- Loading Overlay -->
     <div class="loading-overlay" id="loading-overlay">
         <div class="scanner-loader"></div>
-        <p>Computing risk…</p>
+        <p>Computing cardiovascular risk…</p>
     </div>
+
+    <!-- =====================================================
+         PAGE 1 — PATIENT INPUTS
+         ===================================================== -->
+    <div id="page-1">
+        <main>
+            <div class="page-container">
+
+                <!-- Hero -->
+                <section class="hero">
+                    <div class="hero-inner">
+                        <div class="badge-pill">
+                            <span class="badge-dot"></span>
+                            Cardiovascular risk model · v1.0
+                        </div>
+                        <h1 class="hero-title">A compact model for the <em>heart of the matter</em></h1>
+                        <p class="hero-sub">Cormeum estimates ten-year cardiovascular risk from nine simple inputs. No labs beyond what a routine check-up gives you.</p>
+                    </div>
+                </section>
+
+                <!-- Two-column grid -->
+                <div class="main-grid">
+
+                    <!-- LEFT: Patient Input Form -->
+                    <div class="form-card">
+                        <div class="form-card-header">
+                            <h2>Patient inputs</h2>
+                            <p>Nine fields. No account. Nothing leaves your browser.</p>
+                        </div>
+
+                        <form id="metrics-form" onsubmit="handleFormSubmit(event)">
+                            <div class="fields-grid">
+
+                                <!-- Age -->
+                                <div class="field">
+                                    <div class="field-label-row">
+                                        <label for="age">Age</label>
+                                        <span class="field-unit">yrs</span>
+                                    </div>
+                                    <input type="number" id="age" class="num-input" min="1" max="120" placeholder="45" required>
+                                </div>
+
+                                <!-- Gender -->
+                                <div class="field">
+                                    <div class="field-label-row"><label>Gender</label></div>
+                                    <div class="segmented" id="seg-gender">
+                                        <button type="button" class="seg-btn" data-value="female">Female</button>
+                                        <button type="button" class="seg-btn active" data-value="male">Male</button>
+                                    </div>
+                                    <input type="hidden" id="gender" value="male">
+                                </div>
+
+                                <!-- Height -->
+                                <div class="field">
+                                    <div class="field-label-row">
+                                        <label for="height">Height</label>
+                                        <span class="field-unit">cm</span>
+                                    </div>
+                                    <input type="number" id="height" class="num-input" min="100" max="250" placeholder="172" required>
+                                </div>
+
+                                <!-- Weight -->
+                                <div class="field">
+                                    <div class="field-label-row">
+                                        <label for="weight">Weight</label>
+                                        <span class="field-unit">kg</span>
+                                    </div>
+                                    <input type="number" id="weight" class="num-input" min="30" max="250" placeholder="78" required>
+                                </div>
+
+                                <!-- Systolic BP -->
+                                <div class="field">
+                                    <div class="field-label-row">
+                                        <label for="ap-hi">Systolic BP</label>
+                                        <span class="field-unit">mmHg</span>
+                                    </div>
+                                    <input type="number" id="ap-hi" class="num-input" min="70" max="250" placeholder="Default: 120">
+                                </div>
+
+                                <!-- Diastolic BP -->
+                                <div class="field">
+                                    <div class="field-label-row">
+                                        <label for="ap-low">Diastolic BP</label>
+                                        <span class="field-unit">mmHg</span>
+                                    </div>
+                                    <input type="number" id="ap-low" class="num-input" min="40" max="150" placeholder="Default: 80">
+                                </div>
+
+                                <!-- Cholesterol -->
+                                <div class="field">
+                                    <div class="field-label-row"><label>Cholesterol</label></div>
+                                    <div class="segmented segmented-3" id="seg-cholesterol">
+                                        <button type="button" class="seg-btn active" data-value="1">Normal</button>
+                                        <button type="button" class="seg-btn" data-value="2">Above</button>
+                                        <button type="button" class="seg-btn" data-value="3">Well above</button>
+                                    </div>
+                                    <input type="hidden" id="cholesterol" value="1">
+                                </div>
+
+                                <!-- Glucose -->
+                                <div class="field">
+                                    <div class="field-label-row"><label>Glucose</label></div>
+                                    <div class="segmented segmented-3" id="seg-glucose">
+                                        <button type="button" class="seg-btn active" data-value="1">Normal</button>
+                                        <button type="button" class="seg-btn" data-value="2">Above</button>
+                                        <button type="button" class="seg-btn" data-value="3">Well above</button>
+                                    </div>
+                                    <input type="hidden" id="glucose" value="1">
+                                </div>
+
+                                <!-- Smoking (full width) -->
+                                <div class="field field-full">
+                                    <div class="field-label-row"><label>Smoking</label></div>
+                                    <div class="segmented" id="seg-smoke">
+                                        <button type="button" class="seg-btn active" data-value="false">Non-smoker</button>
+                                        <button type="button" class="seg-btn" data-value="true">Smoker</button>
+                                    </div>
+                                    <input type="hidden" id="smoke" value="false">
+                                </div>
+
+                            </div><!-- /fields-grid -->
+
+                            <div class="form-actions">
+                                <button type="submit" class="btn-predict">Predict risk →</button>
+                                <button type="button" class="btn-reset" onclick="resetForm()">Reset</button>
+                            </div>
+                        </form>
+                    </div><!-- /form-card -->
+
+                    <!-- RIGHT: Preview result panel -->
+                    <div class="result-panel" id="result">
+                        <!-- Empty State -->
+                        <div id="empty-state">
+                            <div class="result-label-row">
+                                <span class="result-dot"></span>
+                                <span class="result-label-text">Awaiting inputs</span>
+                            </div>
+                            <h2 class="empty-heading">Your cardiovascular risk score will appear here.</h2>
+                            <p class="empty-sub">Fill in the patient inputs on the left and click "Predict risk" to generate a personalised ten-year cardiovascular disease probability estimate.</p>
+                            <ul class="feature-list">
+                                <li><span class="feat-bar"></span>Age &amp; sex</li>
+                                <li><span class="feat-bar"></span>BMI</li>
+                                <li><span class="feat-bar"></span>Blood pressure</li>
+                                <li><span class="feat-bar"></span>Cholesterol &amp; glucose</li>
+                                <li><span class="feat-bar"></span>Smoking status</li>
+                            </ul>
+                        </div>
+
+                        <!-- Quick Result (shown after prediction) -->
+                        <div id="result-preview" class="hidden">
+                            <div class="result-score-header">
+                                <span class="result-label-text-sm">Cormeum score</span>
+                                <span class="risk-badge" id="risk-badge-preview">Low risk</span>
+                            </div>
+                            <div class="score-row">
+                                <span class="score-number" id="score-number-preview">0</span>
+                                <span class="score-denom">/ 100</span>
+                            </div>
+                            <div class="score-bar-track">
+                                <div class="score-bar-fill" id="score-bar-preview"></div>
+                            </div>
+                            <p class="bmi-note" id="bmi-note-preview"></p>
+                            <button class="btn-full-report" onclick="showPage2()">
+                                View full report →
+                            </button>
+                            <p class="disclaimer">Educational estimate only. Not a substitute for clinical judgment or diagnosis.</p>
+                        </div>
+                    </div><!-- /result-panel -->
+
+                </div><!-- /main-grid -->
+
+                <!-- How It Works -->
+                <section id="model" class="how-it-works">
+                    <h2 class="how-title">How Cormeum reads a patient.</h2>
+                    <div class="how-grid">
+                        <div class="how-card">
+                            <span class="how-num">01</span>
+                            <h3 class="how-card-title">Nine inputs</h3>
+                            <p>Age, gender, height, weight, systolic &amp; diastolic blood pressure, cholesterol, glucose, and smoking status — all from a routine check-up.</p>
+                        </div>
+                        <div class="how-card">
+                            <span class="how-num">02</span>
+                            <h3 class="how-card-title">Logistic core</h3>
+                            <p>A weighted logistic model inspired by the Cardiovascular Disease dataset combines all inputs into a single readable probability score.</p>
+                        </div>
+                        <div class="how-card">
+                            <span class="how-num">03</span>
+                            <h3 class="how-card-title">Interpretable</h3>
+                            <p>See which factors pushed your score up and by how much — so you know exactly where to focus your attention first.</p>
+                        </div>
+                    </div>
+                </section>
+
+            </div><!-- /page-container -->
+        </main>
+
+        <footer class="site-footer">
+            <div class="footer-inner">
+                <span id="footer-year"></span>
+                <span>Built with care for hearts everywhere.</span>
+            </div>
+        </footer>
+    </div><!-- /#page-1 -->
+
+
+    <!-- =====================================================
+         PAGE 2 — FULL DIAGNOSTIC REPORT
+         ===================================================== -->
+    <div id="page-2" class="hidden">
+        <main>
+            <div class="page-container p2-container">
+
+                <!-- Score Overview Card -->
+                <div class="p2-card p2-score-card">
+                    <div class="p2-score-left">
+                        <div class="result-score-header">
+                            <span class="result-label-text-sm">10-Year Cardiovascular Risk</span>
+                            <span class="risk-badge" id="risk-badge-p2">Low risk</span>
+                        </div>
+                        <div class="score-row" style="margin-bottom: 0.75rem;">
+                            <span class="score-number p2-score-big" id="score-number-p2">0</span>
+                            <span class="score-denom">/ 100</span>
+                        </div>
+                        <div class="score-bar-track">
+                            <div class="score-bar-fill" id="score-bar-p2"></div>
+                        </div>
+                        <p class="bmi-note" id="bmi-note-p2" style="margin-top: 0.75rem; margin-bottom: 0;"></p>
+                    </div>
+                    <div class="p2-score-right">
+                        <!-- Radial gauge SVG -->
+                        <div class="gauge-wrap">
+                            <svg width="160" height="160" viewBox="0 0 160 160">
+                                <circle class="gauge-track" cx="80" cy="80" r="66" stroke-width="10" fill="none"/>
+                                <circle class="gauge-arc" id="gauge-arc" cx="80" cy="80" r="66" stroke-width="10" fill="none"
+                                    stroke-dasharray="414.69"
+                                    stroke-dashoffset="414.69"
+                                    stroke-linecap="round"
+                                    transform="rotate(-90 80 80)"/>
+                            </svg>
+                            <div class="gauge-label-center">
+                                <span class="gauge-pct" id="gauge-pct">0%</span>
+                                <span class="gauge-sub">risk</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Vitals Summary Pills -->
+                <div class="p2-card">
+                    <h3 class="p2-section-title">
+                        <span class="p2-section-icon">📋</span> Submitted Patient Vitals
+                    </h3>
+                    <div class="vitals-pill-grid" id="vitals-pill-grid"></div>
+                </div>
+
+                <!-- Drivers + Recommendations side by side -->
+                <div class="p2-two-col">
+
+                    <!-- Risk Drivers -->
+                    <div class="p2-card">
+                        <h3 class="p2-section-title">
+                            <span class="p2-section-icon">⚠️</span> Risk Factor Analysis
+                        </h3>
+                        <p class="p2-section-sub">Primary physiological markers driving the patient's risk probability.</p>
+                        <div class="drivers-list" id="drivers-list"></div>
+                    </div>
+
+                    <!-- Recommendations -->
+                    <div class="p2-card">
+                        <h3 class="p2-section-title">
+                            <span class="p2-section-icon">📉</span> Recommendations
+                        </h3>
+                        <p class="p2-section-sub">Targeted clinical and lifestyle interventions to reduce cardiovascular risk.</p>
+                        <div class="rec-list" id="rec-list"></div>
+                    </div>
+
+                </div><!-- /p2-two-col -->
+
+                <!-- Contributing Factors (full width) -->
+                <div class="p2-card">
+                    <h3 class="p2-section-title">
+                        <span class="p2-section-icon">📊</span> Contributing Factors
+                    </h3>
+                    <p class="p2-section-sub">How much each input contributes to your overall risk score.</p>
+                    <ul class="factors-list p2-factors-list" id="factors-list-p2"></ul>
+                </div>
+
+                <!-- Disclaimer -->
+                <p class="p2-disclaimer">
+                    <strong>Disclaimer:</strong> This report is generated by a computerised predictive algorithm. It is designed for educational and screening purposes only and does not constitute formal medical diagnosis or treatment. Results should be evaluated by a qualified healthcare professional.
+                </p>
+
+            </div><!-- /page-container -->
+        </main>
+    </div><!-- /#page-2 -->
 
     <script src="app.js"></script>
 </body>
